@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo-Americanism | Hegemonic Reconfiguration</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        dark: { 900: '#0A0F1C', 800: '#111827', 700: '#1F2937' },
+                        neon: { blue: '#3B82F6', purple: '#8B5CF6', cyan: '#06B6D4', red: '#EF4444', gold: '#F59E0B' }
+                    },
+                    animation: {
+                        'gradient': 'gradient 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        gradient: { '0%, 100%': { 'background-position': '0% 50%' }, '50%': { 'background-position': '100% 50%' } },
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #0A0F1C; color: #E2E8F0; font-family: 'Inter', sans-serif; }
+        .bg-grid {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .glass {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #06B6D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient 5s ease infinite;
+        }
+        .glow-border { position: relative; background: #111827; border-radius: 1rem; }
+        .glow-border::before {
+            content: ''; position: absolute; inset: -1px; border-radius: 1rem; padding: 1px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(139,92,246,0.05), rgba(6,182,212,0.4));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+        }
+        .matrix-cell { transition: all 0.3s ease; }
+        .matrix-cell:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0A0F1C; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
+        .mobile-menu.active { transform: translateX(0); }
+        .lang-dropdown { display: none; }
+        .lang-dropdown.active { display: block; }
+    </style>
+</head>
+<body class="bg-grid antialiased selection:bg-neon-purple selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-blue to-neon-purple flex items-center justify-center">
+                    <i class="fas fa-cube text-white text-sm"></i>
+                </div>
+                <span class="font-bold text-lg tracking-tight text-white">Neo-Americanism<span class="text-neon-blue">.</span></span>
+            </div>
+            <div class="hidden lg:flex space-x-8 text-sm font-medium text-slate-400">
+                <a href="#overview" class="hover:text-white transition" data-i18n="nav_overview">Overview</a>
+                <a href="#pillars" class="hover:text-white transition" data-i18n="nav_pillars">5 Pillars</a>
+                <a href="#chapters" class="hover:text-white transition" data-i18n="nav_chapters">Chapters</a>
+                <a href="#matrix" class="hover:text-white transition" data-i18n="nav_matrix">9 Forms</a>
+                <a href="#scenarios" class="hover:text-white transition" data-i18n="nav_scenarios">Scenarios</a>
+                <a href="#methodology" class="hover:text-white transition" data-i18n="nav_methodology">Methodology</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <!-- Language Switcher -->
+                <div class="relative">
+                    <button id="langBtn" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition border border-white/10 flex items-center space-x-2">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLang">EN</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="langDropdown" class="lang-dropdown absolute right-0 mt-2 w-32 glass rounded-lg shadow-xl py-2 z-50">
+                        <button class="lang-option w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white transition" data-lang="en">English</button>
+                        <button class="lang-option w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white transition" data-lang="es">Español</button>
+                        <button class="lang-option w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white transition" data-lang="zh">中文</button>
+                    </div>
+                </div>
+                <button id="menuBtn" class="lg:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-y-0 right-0 w-64 bg-dark-800 z-50 p-6 shadow-2xl lg:hidden">
+        <button id="closeMenu" class="absolute top-4 right-4 text-white text-xl"><i class="fas fa-times"></i></button>
+        <div class="flex flex-col space-y-6 mt-12 text-slate-300 font-medium">
+            <a href="#overview" class="hover:text-neon-blue transition mobile-link" data-i18n="nav_overview">Overview</a>
+            <a href="#pillars" class="hover:text-neon-blue transition mobile-link" data-i18n="nav_pillars">5 Pillars</a>
+            <a href="#chapters" class="hover:text-neon-blue transition mobile-link" data-i18n="nav_chapters">Chapters</a>
+            <a href="#matrix" class="hover:text-neon-blue transition mobile-link" data-i18n="nav_matrix">9 Forms</a>
+            <a href="#scenarios" class="hover:text-neon-blue transition mobile-link" data-i18n="nav_scenarios">Scenarios</a>
+            <a href="#methodology" class="hover:text-neon-blue transition mobile-link" data-i18n="nav_methodology">Methodology</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+        <div class="absolute top-20 left-1/4 w-96 h-96 bg-neon-blue/20 rounded-full filter blur-[120px] animate-float"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-neon-purple/20 rounded-full filter blur-[120px] animate-float" style="animation-delay: 2s;"></div>
+
+        <div class="relative max-w-5xl mx-auto px-6 text-center" data-aos="fade-up">
+            <div class="inline-flex items-center px-3 py-1 rounded-full border border-neon-blue/30 bg-neon-blue/5 text-neon-blue text-xs font-semibold mb-8 tracking-wider uppercase" data-i18n="hero_badge">
+                2026 Academic & Strategic Edition
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-[1.1]">
+                <span data-i18n="hero_title_1">Hegemonic Reconfiguration</span> <br>
+                <span class="text-gradient" data-i18n="hero_title_2">in the Post-Unipolar Order</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed" data-i18n="hero_desc">
+                A comprehensive strategic and academic assessment of Neo-Americanism, integrating complex systems theory, structural power analysis, and scenario planning to map the evolution of U.S. hegemony through the mid-21st century.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#chapters" class="px-8 py-4 rounded-xl bg-gradient-to-r from-neon-blue to-neon-purple text-white font-semibold hover:opacity-90 transition shadow-lg shadow-neon-blue/20" data-i18n="hero_btn_1">
+                    Explore Full Research <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="#overview" class="px-8 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 transition" data-i18n="hero_btn_2">
+                    View Key Findings
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-8 max-w-2xl mx-auto mt-16 pt-8 border-t border-white/5">
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-3xl font-bold text-white">6</div>
+                    <div class="text-sm text-slate-500" data-i18n="stat_1">Core Chapters</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-3xl font-bold text-white">9</div>
+                    <div class="text-sm text-slate-500" data-i18n="stat_2">Hegemonic Forms</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-3xl font-bold text-white">3</div>
+                    <div class="text-sm text-slate-500" data-i18n="stat_3">Future Scenarios</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overview -->
+    <section id="overview" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4"><span data-i18n="overview_title_1">Research</span> <span class="text-gradient" data-i18n="overview_title_2">Overview</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="overview_desc">Moving beyond single-theory reductionism to a multi-dimensional, systems-level understanding of contemporary hegemony.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glow-border p-8" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-12 h-12 rounded-lg bg-neon-blue/10 flex items-center justify-center mb-6 text-neon-blue text-xl"><i class="fas fa-layer-group"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="ov_card_1_title">Integrated Framework</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" data-i18n="ov_card_1_desc">Synthesizes realism, constructivism, and structural power theory into a unified operating system model of hegemony.</p>
+                </div>
+                <div class="glow-border p-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-12 h-12 rounded-lg bg-neon-purple/10 flex items-center justify-center mb-6 text-neon-purple text-xl"><i class="fas fa-project-diagram"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="ov_card_2_title">Complex Systems Analysis</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" data-i18n="ov_card_2_desc">Applies complex adaptive systems theory to map coupling mechanisms across nine hegemonic forms.</p>
+                </div>
+                <div class="glow-border p-8" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-12 h-12 rounded-lg bg-neon-cyan/10 flex items-center justify-center mb-6 text-neon-cyan text-xl"><i class="fas fa-chess-board"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="ov_card_3_title">Scenario Planning</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" data-i18n="ov_card_3_desc">Develops three plausible future scenarios for hegemonic evolution through 2050, with actionable policy implications.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pillars -->
+    <section id="pillars" class="py-24 bg-dark-800/50 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div data-aos="fade-right">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6"><span data-i18n="pillars_title_1">The Five Pillars of</span> <br><span class="text-gradient" data-i18n="pillars_title_2">Hegemonic Power</span></h2>
+                    <p class="text-slate-400 mb-8 leading-relaxed" data-i18n="pillars_desc">Neo-Americanism operates across five interconnected dimensions of power, forming a self-reinforcing system.</p>
+                    <div class="space-y-6" id="pillarsList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                <div class="relative flex justify-center" data-aos="fade-left">
+                    <div class="w-full max-w-md aspect-square">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapters -->
+    <section id="chapters" class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4"><span data-i18n="chapters_title_1">Full Chapter</span> <span class="text-gradient" data-i18n="chapters_title_2">Structure</span></h2>
+                <p class="text-slate-400" data-i18n="chapters_desc">Six core chapters spanning theoretical foundations, historical evolution, structural analysis, and future projections.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="chaptersGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Matrix -->
+    <section id="matrix" class="py-24 bg-dark-800/50 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4"><span data-i18n="matrix_title_1">Nine Forms of</span> <span class="text-gradient" data-i18n="matrix_title_2">Future Hegemony</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="matrix_desc">A comprehensive taxonomy of 21st-century hegemonic power, organized across categories from foundational to high-order governance.</p>
+            </div>
+            <div class="space-y-8" id="matrixGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Scenarios -->
+    <section id="scenarios" class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4"><span data-i18n="scen_title_1">Three Future Scenarios</span> <span class="text-gradient" data-i18n="scen_title_2">to 2050</span></h2>
+                <p class="text-slate-400" data-i18n="scen_desc">Plausible trajectories for the evolution of global hegemonic order, based on current structural trends.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8" id="scenariosGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology -->
+    <section id="methodology" class="py-24 bg-dark-800/50 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16">
+                <div data-aos="fade-right">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-8"><span data-i18n="meth_title_1">Research</span> <span class="text-gradient" data-i18n="meth_title_2">Methodology</span></h2>
+                    <div class="space-y-6" id="methodologyList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                <div data-aos="fade-left">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-8"><span data-i18n="acad_title_1">Academic</span> <span class="text-gradient" data-i18n="acad_title_2">Positioning</span></h2>
+                    <div class="glass p-8 rounded-2xl space-y-8">
+                        <div>
+                            <h4 class="text-neon-blue font-bold text-sm uppercase tracking-wider mb-3" data-i18n="acad_sub_1">Theoretical Contributions</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed" data-i18n="acad_desc_1">Revised hegemonic stability theory, non-linear power transition logic, and expanded structural power dimensions for the digital age.</p>
+                        </div>
+                        <div class="border-t border-white/5 pt-6">
+                            <h4 class="text-neon-purple font-bold text-sm uppercase tracking-wider mb-3" data-i18n="acad_sub_2">Policy Relevance</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed" data-i18n="acad_desc_2">Actionable insights for national security strategists, policymakers, investors, and global business leaders.</p>
+                        </div>
+                        <div class="border-t border-white/5 pt-6">
+                            <h4 class="text-neon-cyan font-bold text-sm uppercase tracking-wider mb-3" data-i18n="acad_sub_3">Data Sources</h4>
+                            <div class="flex flex-wrap gap-2 mt-2" id="dataSources">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA & Footer -->
+    <section class="py-24">
+        <div class="max-w-4xl mx-auto px-6 text-center" data-aos="zoom-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-i18n="cta_title">Explore the Full Research</h2>
+            <p class="text-slate-400 mb-10 max-w-2xl mx-auto" data-i18n="cta_desc">Dive deep into the complete analysis of Neo-Americanism, with full chapters, empirical data, and detailed scenario projections.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#" class="px-8 py-4 rounded-xl bg-gradient-to-r from-neon-blue to-neon-purple text-white font-semibold hover:opacity-90 transition shadow-lg shadow-neon-blue/20" data-i18n="cta_btn_1">Read Full Book <i class="fas fa-book-open ml-2"></i></a>
+                <a href="#" class="px-8 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 transition" data-i18n="cta_btn_2">Download Summary <i class="fas fa-download ml-2"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-white/5 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-6 text-center text-slate-600 text-sm">
+            <p>&copy; 2026 Neo-Americanism Research Project. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 50 });
+
+        // --- i18n Translation Dictionary ---
+        const translations = {
+            en: {
+                nav_overview: "Overview", nav_pillars: "5 Pillars", nav_chapters: "Chapters", nav_matrix: "9 Forms", nav_scenarios: "Scenarios", nav_methodology: "Methodology",
+                hero_badge: "2026 Academic & Strategic Edition", hero_title_1: "Hegemonic Reconfiguration", hero_title_2: "in the Post-Unipolar Order",
+                hero_desc: "A comprehensive strategic and academic assessment of Neo-Americanism, integrating complex systems theory, structural power analysis, and scenario planning to map the evolution of U.S. hegemony through the mid-21st century.",
+                hero_btn_1: 'Explore Full Research <i class="fas fa-arrow-right ml-2"></i>', hero_btn_2: "View Key Findings",
+                stat_1: "Core Chapters", stat_2: "Hegemonic Forms", stat_3: "Future Scenarios",
+                overview_title_1: "Research", overview_title_2: "Overview", overview_desc: "Moving beyond single-theory reductionism to a multi-dimensional, systems-level understanding of contemporary hegemony.",
+                ov_card_1_title: "Integrated Framework", ov_card_1_desc: "Synthesizes realism, constructivism, and structural power theory into a unified operating system model of hegemony.",
+                ov_card_2_title: "Complex Systems Analysis", ov_card_2_desc: "Applies complex adaptive systems theory to map coupling mechanisms across nine hegemonic forms.",
+                ov_card_3_title: "Scenario Planning", ov_card_3_desc: "Develops three plausible future scenarios for hegemonic evolution through 2050, with actionable policy implications.",
+                pillars_title_1: "The Five Pillars of", pillars_title_2: "Hegemonic Power", pillars_desc: "Neo-Americanism operates across five interconnected dimensions of power, forming a self-reinforcing system.",
+                p1: "Technological Hegemony", p1d: "Innovation-capital-market spiral, frontier AI/quantum leadership.",
+                p2: "Military Hegemony", p2d: "All-domain intelligent capabilities, global alliance architecture.",
+                p3: "Cultural Hegemony", p3d: "Four-tier penetration from sensory experience to identity.",
+                p4: "Institutional Hegemony", p4d: "Material, institutional, and cognitive structural power.",
+                p5: "Economic Hegemony", p5d: "Dollar reserve status, high-end value chain monopoly.",
+                chapters_title_1: "Full Chapter", chapters_title_2: "Structure", chapters_desc: "Six core chapters spanning theoretical foundations, historical evolution, structural analysis, and future projections.",
+                matrix_title_1: "Nine Forms of", matrix_title_2: "Future Hegemony", matrix_desc: "A comprehensive taxonomy of 21st-century hegemonic power, organized across categories.",
+                scen_title_1: "Three Future Scenarios", scen_title_2: "to 2050", scen_desc: "Plausible trajectories for the evolution of global hegemonic order.",
+                meth_title_1: "Research", meth_title_2: "Methodology", acad_title_1: "Academic", acad_title_2: "Positioning",
+                acad_sub_1: "Theoretical Contributions", acad_desc_1: "Revised hegemonic stability theory, non-linear power transition logic.",
+                acad_sub_2: "Policy Relevance", acad_desc_2: "Actionable insights for national security strategists and policymakers.",
+                acad_sub_3: "Data Sources",
+                cta_title: "Explore the Full Research", cta_desc: "Dive deep into the complete analysis of Neo-Americanism.",
+                cta_btn_1: 'Read Full Book <i class="fas fa-book-open ml-2"></i>', cta_btn_2: 'Download Summary <i class="fas fa-download ml-2"></i>',
+                footer_rights: "All rights reserved."
+            },
+            es: {
+                nav_overview: "Resumen", nav_pillars: "5 Pilares", nav_chapters: "Capítulos", nav_matrix: "9 Formas", nav_scenarios: "Escenarios", nav_methodology: "Metodología",
+                hero_badge: "Edición Académica y Estratégica 2026", hero_title_1: "Reconfiguración Hegemónica", hero_title_2: "en el Orden Post-Unipolar",
+                hero_desc: "Una evaluación estratégica y académica integral del Neo-Americanismo, integrando teoría de sistemas complejos, análisis de poder estructural y planificación de escenarios.",
+                hero_btn_1: 'Explorar Investigación <i class="fas fa-arrow-right ml-2"></i>', hero_btn_2: "Ver Hallazgos Clave",
+                stat_1: "Capítulos Clave", stat_2: "Formas Hegemónicas", stat_3: "Escenarios Futuros",
+                overview_title_1: "Resumen de", overview_title_2: "Investigación", overview_desc: "Superando el reduccionismo de teoría única hacia una comprensión multidimensional y sistémica de la hegemonía contemporánea.",
+                ov_card_1_title: "Marco Integrado", ov_card_1_desc: "Sintetiza realismo, constructivismo y teoría de poder estructural en un modelo unificado.",
+                ov_card_2_title: "Análisis de Sistemas Complejos", ov_card_2_desc: "Aplica teoría de sistemas adaptativos complejos para mapear mecanismos de acoplamiento.",
+                ov_card_3_title: "Planificación de Escenarios", ov_card_3_desc: "Desarrolla tres escenarios futuros plausibles para la evolución hegemónica hasta 2050.",
+                pillars_title_1: "Los Cinco Pilares del", pillars_title_2: "Poder Hegemónico", pillars_desc: "El Neo-Americanismo opera a través de cinco dimensiones de poder interconectadas.",
+                p1: "Hegemonía Tecnológica", p1d: "Espiral innovación-capital, liderazgo en IA/cuántica.",
+                p2: "Hegemonía Militar", p2d: "Capacidades inteligentes de todos los dominios, arquitectura de alianzas.",
+                p3: "Hegemonía Cultural", p3d: "Penetración de cuatro niveles desde la experiencia sensorial hasta la identidad.",
+                p4: "Hegemonía Institucional", p4d: "Poder estructural material, institucional y cognitivo.",
+                p5: "Hegemonía Económica", p5d: "Estatus de reserva del dólar, monopolio de cadena de valor.",
+                chapters_title_1: "Estructura Completa de", chapters_title_2: "Capítulos", chapters_desc: "Seis capítulos principales que abarcan fundamentos teóricos, evolución histórica y proyecciones futuras.",
+                matrix_title_1: "Nueve Formas de", matrix_title_2: "Hegemonía Futura", matrix_desc: "Una taxonomía integral del poder hegemónico del siglo XXI, organizada por categorías.",
+                scen_title_1: "Tres Escenarios Futuros", scen_title_2: "hasta 2050", scen_desc: "Trayectorias plausibles para la evolución del orden hegemónico global.",
+                meth_title_1: "Metodología de", meth_title_2: "Investigación", acad_title_1: "Posicionamiento", acad_title_2: "Académico",
+                acad_sub_1: "Contribuciones Teóricas", acad_desc_1: "Teoría de estabilidad hegemónica revisada, lógica de transición de poder no lineal.",
+                acad_sub_2: "Relevancia Política", acad_desc_2: "Información procesable para estrategas de seguridad nacional y formuladores de políticas.",
+                acad_sub_3: "Fuentes de Datos",
+                cta_title: "Explorar la Investigación Completa", cta_desc: "Profundice en el análisis completo del Neo-Americanismo.",
+                cta_btn_1: 'Leer Libro Completo <i class="fas fa-book-open ml-2"></i>', cta_btn_2: 'Descargar Resumen <i class="fas fa-download ml-2"></i>',
+                footer_rights: "Todos los derechos reservados."
+            },
+            zh: {
+                nav_overview: "概述", nav_pillars: "五大支柱", nav_chapters: "核心章节", nav_matrix: "九大形态", nav_scenarios: "未来情景", nav_methodology: "研究方法",
+                hero_badge: "2026 学术与战略版", hero_title_1: "后单极秩序下的", hero_title_2: "霸权重构",
+                hero_desc: "对新美利坚主义的全面战略与学术评估，融合复杂系统理论、结构性权力分析和情景规划，描绘21世纪中叶美国霸权的演变轨迹。",
+                hero_btn_1: '探索完整研究 <i class="fas fa-arrow-right ml-2"></i>', hero_btn_2: "查看核心发现",
+                stat_1: "核心章节", stat_2: "霸权形态", stat_3: "未来情景",
+                overview_title_1: "研究", overview_title_2: "概述", overview_desc: "超越单一理论的还原论，走向对当代霸权的多维度、系统级理解。",
+                ov_card_1_title: "综合框架", ov_card_1_desc: "将现实主义、建构主义和结构权力理论综合为统一的霸权操作系统模型。",
+                ov_card_2_title: "复杂系统分析", ov_card_2_desc: "应用复杂自适应系统理论，映射九种霸权形态的耦合机制。",
+                ov_card_3_title: "情景规划", ov_card_3_desc: "为至2050年的霸权演变制定三个合理的未来情景，并提供可操作的政策启示。",
+                pillars_title_1: "霸权权力的", pillars_title_2: "五大支柱", pillars_desc: "新美利坚主义在五个相互关联的权力维度上运作，形成一个自我强化的系统。",
+                p1: "技术霸权", p1d: "创新-资本-市场螺旋，前沿AI/量子领导力。",
+                p2: "军事霸权", p2d: "全域智能能力，全球联盟架构。",
+                p3: "文化霸权", p3d: "从感官体验到身份认同的四层渗透。",
+                p4: "制度霸权", p4d: "物质、制度和认知结构性权力。",
+                p5: "经济霸权", p5d: "美元储备地位，高端价值链垄断。",
+                chapters_title_1: "完整章节", chapters_title_2: "结构", chapters_desc: "六个核心章节，涵盖理论基础、历史演变、结构分析和未来预测。",
+                matrix_title_1: "未来霸权的", matrix_title_2: "九大形态", matrix_desc: "21世纪霸权权力的全面分类学，按从基础到高阶治理的类别组织。",
+                scen_title_1: "至2050年的", scen_title_2: "三大未来情景", scen_desc: "基于当前结构趋势的全球霸权秩序演变的合理轨迹。",
+                meth_title_1: "研究", meth_title_2: "方法论", acad_title_1: "学术", acad_title_2: "定位",
+                acad_sub_1: "理论贡献", acad_desc_1: "修正的霸权稳定理论，非线性的权力转移逻辑。",
+                acad_sub_2: "政策相关性", acad_desc_2: "为国家安全战略家和政策制定者提供可操作的见解。",
+                acad_sub_3: "数据来源",
+                cta_title: "探索完整研究", cta_desc: "深入探索新美利坚主义的完整分析。",
+                cta_btn_1: '阅读全书 <i class="fas fa-book-open ml-2"></i>', cta_btn_2: '下载摘要 <i class="fas fa-download ml-2"></i>',
+                footer_rights: "版权所有。"
+            }
+        };
+
+        // Complex HTML blocks translations
+        const complexTranslations = {
+            en: {
+                pillars: [
+                    {n:1, t:"p1", d:"p1d", c:"cyan"}, {n:2, t:"p2", d:"p2d", c:"blue"}, {n:3, t:"p3", d:"p3d", c:"gold"}, {n:4, t:"p4", d:"p4d", c:"purple"}, {n:5, t:"p5", d:"p5d", c:"green"}
+                ],
+                chapters: [
+                    {n:"01", t:"An Integrative Analytical Framework", d:"Conceptual origins, Six doctrines, Three-tier OS", c:"blue"},
+                    {n:"02", t:"The Five Pillars of Power", d:"Tech frontier, Military transformation, Dollar analysis", c:"purple"},
+                    {n:"03", t:"Grand History of U.S. Hegemony", d:"Exceptionalism, Five-stage periodization, Elite iteration", c:"cyan"},
+                    {n:"04", t:"Dilemmas of Hegemony", d:"Polarization, Fiscal risks, Governance mismatch", c:"red"},
+                    {n:"05", t:"The Futurist Paradigm", d:"Time as power, Bidirectional construction, Temporal reconstruction", c:"gold"},
+                    {n:"06", t:"Evolution & Projections", d:"Human-AI co-governance, Nine forms, Three scenarios", c:"green"}
+                ],
+                matrix: [
+                    {cat:"Foundational Dimensional", icon:"cubes", color:"blue", items:[{t:"Spatial Hegemony", d:"Control over geographic and orbital domains."},{t:"Temporal Hegemony", d:"Power over historical narrative and future agenda."},{t:"Invisible Hegemony", d:"Structural power operating below conscious awareness."}]},
+                    {cat:"Substantive Domain", icon:"shield-alt", color:"purple", items:[{t:"Military Hegemony", d:"Coercive power as the final backstop."},{t:"Financial Hegemony", d:"Currency and capital markets as tools of control."},{t:"Ecological Hegemony", d:"Control over resources and climate engineering."}]},
+                    {cat:"Emerging Digital & High-Order", icon:"brain", color:"cyan", items:[{t:"Digital Hegemony", d:"Compute, algorithms, and platforms as new core."},{t:"Discursive-Cognitive", d:"Narrative and media control over perception."},{t:"Rule-Institutional", d:"Global standards and institutional veto power."}]}
+                ],
+                scenarios: [
+                    {tag:"SCENARIO A", t:"Hegemonic Perpetuation", d:"U.S. achieves AGI/Quantum supremacy, re-establishing unipolar dominance.", points:["Tech unipolarity re-established","Center-periphery structure","Algorithmic power"], c:"cyan"},
+                    {tag:"SCENARIO B (BASELINE)", t:"Bipolar Confrontation", d:"Great power tech gaps narrow, leading to two parallel systemic blocs.", points:["Two parallel global systems","Circle-based hegemony","Low-intensity competition"], c:"purple"},
+                    {tag:"SCENARIO C", t:"Multipolar Fragmentation", d:"U.S. internal crises deepen, Global South rises, leading to fragmented order.", points:["Diffused global power","Regional hegemonies","Governance hollowing out"], c:"blue"}
+                ],
+                methodology: [
+                    {icon:"landmark", t:"Historical Institutionalism", d:"Analysis of path dependence and institutional evolution.", c:"blue"},
+                    {icon:"search-plus", t:"Process Tracing", d:"Empirical validation through the Russia-Ukraine conflict.", c:"purple"},
+                    {icon:"network-wired", t:"Complex Systems Theory", d:"CAS framework to model non-linear dynamics.", c:"cyan"},
+                    {icon:"map-signs", t:"Scenario Planning", d:"Structured development to explore plausible futures.", c:"gold"}
+                ],
+                sources: ["CBO", "Pew Research", "BIS", "SIPRI", "Brookings", "RAND", "HKS", "Oxford IR"],
+                chartLabels: ['Technological', 'Military', 'Cultural', 'Institutional', 'Economic']
+            },
+            es: {
+                pillars: [
+                    {n:1, t:"p1", d:"p1d", c:"cyan"}, {n:2, t:"p2", d:"p2d", c:"blue"}, {n:3, t:"p3", d:"p3d", c:"gold"}, {n:4, t:"p4", d:"p4d", c:"purple"}, {n:5, t:"p5", d:"p5d", c:"green"}
+                ],
+                chapters: [
+                    {n:"01", t:"Un Marco Analítico Integrador", d:"Orígenes conceptuales, Seis doctrinas, OS de tres niveles", c:"blue"},
+                    {n:"02", t:"Los Cinco Pilares del Poder", d:"Frontera tecnológica, Transformación militar, Análisis del dólar", c:"purple"},
+                    {n:"03", t:"Gran Historia de la Hegemonía EE.UU.", d:"Excepcionalismo, Periodización de cinco etapas, Iteración de élites", c:"cyan"},
+                    {n:"04", t:"Dilemas de la Hegemonía", d:"Polarización, Riesgos fiscales, Desajuste de gobernanza", c:"red"},
+                    {n:"05", t:"El Paradigma Futurista", d:"El tiempo como poder, Construcción bidireccional, Reconstrucción temporal", c:"gold"},
+                    {n:"06", t:"Evolución y Proyecciones", d:"Cogobernanza Humano-IA, Nueve formas, Tres escenarios", c:"green"}
+                ],
+                matrix: [
+                    {cat:"Dimensión Fundamental", icon:"cubes", color:"blue", items:[{t:"Hegemonía Espacial", d:"Control sobre dominios geográficos y orbitales."},{t:"Hegemonía Temporal", d:"Poder sobre la narrativa histórica y la agenda futura."},{t:"Hegemonía Invisible", d:"Poder estructural que opera bajo la conciencia."}]},
+                    {cat:"Dominio Sustantivo", icon:"shield-alt", color:"purple", items:[{t:"Hegemonía Militar", d:"Poder coercitivo como último respaldo."},{t:"Hegemonía Financiera", d:"Moneda y mercados de capital como herramientas."},{t:"Hegemonía Ecológica", d:"Control sobre recursos e ingeniería climática."}]},
+                    {cat:"Digital Emergente y de Alto Orden", icon:"brain", color:"cyan", items:[{t:"Hegemonía Digital", d:"Cómputo, algoritmos y plataformas como nuevo núcleo."},{t:"Discursivo-Cognitivo", d:"Control narrativo y mediático sobre la percepción."},{t:"Regla-Institucional", d:"Estándares globales y poder de veto institucional."}]}
+                ],
+                scenarios: [
+                    {tag:"ESCENARIO A", t:"Perpetuación Hegemónica", d:"EE.UU. logra supremacía AGI/Cuántica, restableciendo dominio unipolar.", points:["Unipolaridad tecnológica","Estructura centro-periferia","Poder algorítmico"], c:"cyan"},
+                    {tag:"ESCENARIO B (BASE)", t:"Confrontación Bipolar", d:"Las brechas tecnológicas se reducen, llevando a dos bloques sistémicos paralelos.", points:["Dos sistemas globales paralelos","Hegemonía basada en círculos","Competencia de baja intensidad"], c:"purple"},
+                    {tag:"ESCENARIO C", t:"Fragmentación Multipolar", d:"Las crisis internas de EE.UU. se profundizan, el Sur Global asciende.", points:["Poder global difuso","Hegemonías regionales","Vaciamiento de gobernanza"], c:"blue"}
+                ],
+                methodology: [
+                    {icon:"landmark", t:"Institucionalismo Histórico", d:"Análisis de dependencia de trayectoria y evolución institucional.", c:"blue"},
+                    {icon:"search-plus", t:"Seguimiento de Procesos", d:"Validación empírica a través del conflicto Rusia-Ucrania.", c:"purple"},
+                    {icon:"network-wired", t:"Teoría de Sistemas Complejos", d:"Marco CAS para modelar dinámicas no lineales.", c:"cyan"},
+                    {icon:"map-signs", t:"Planificación de Escenarios", d:"Desarrollo estructurado para explorar futuros plausibles.", c:"gold"}
+                ],
+                sources: ["CBO", "Pew Research", "BIS", "SIPRI", "Brookings", "RAND", "HKS", "Oxford IR"],
+                chartLabels: ['Tecnológico', 'Militar', 'Cultural', 'Institucional', 'Económico']
+            },
+            zh: {
+                pillars: [
+                    {n:1, t:"p1", d:"p1d", c:"cyan"}, {n:2, t:"p2", d:"p2d", c:"blue"}, {n:3, t:"p3", d:"p3d", c:"gold"}, {n:4, t:"p4", d:"p4d", c:"purple"}, {n:5, t:"p5", d:"p5d", c:"green"}
+                ],
+                chapters: [
+                    {n:"01", t:"综合分析框架", d:"概念起源，六大核心教义，三层操作系统架构", c:"blue"},
+                    {n:"02", t:"权力的五大支柱", d:"技术前沿竞争，全域军事转型，美元与价值链分析", c:"purple"},
+                    {n:"03", t:"美国霸权的宏大历史", d:"美国例外论叙事，五阶段分期，精英代际更迭", c:"cyan"},
+                    {n:"04", t:"霸权的困境", d:"社会极化与不平等，财政结构性风险，治理-技术错配", c:"red"},
+                    {n:"05", t:"未来主义范式", d:"时间作为权力资源，过去-未来双向建构，技术驱动的时间重构", c:"gold"},
+                    {n:"06", t:"演变与预测", d:"人机协同治理，九种未来霸权形态，至2050年的三大情景", c:"green"}
+                ],
+                matrix: [
+                    {cat:"基础维度", icon:"cubes", color:"blue", items:[{t:"空间霸权", d:"对地理、领空和轨道领域的控制。"},{t:"时间霸权", d:"对历史叙事和未来议程设定的权力。"},{t:"无形霸权", d:"在意识层面之下运作的结构性权力。"}]},
+                    {cat:"实质领域", icon:"shield-alt", color:"purple", items:[{t:"军事霸权", d:"作为所有霸权系统最终后盾的强制力。"},{t:"金融霸权", d:"货币、支付系统和资本市场作为控制工具。"},{t:"生态霸权", d:"对关键资源、气候工程和合成生物学的控制。"}]},
+                    {cat:"新兴数字与高阶", icon:"brain", color:"cyan", items:[{t:"数字霸权", d:"算力、算法、数据和平台作为新的权力核心。"},{t:"话语-认知霸权", d:"对集体认知的叙事、媒体和学术控制。"},{t:"规则-制度霸权", d:"全球标准、治理规则和制度否决权。"}]}
+                ],
+                scenarios: [
+                    {tag:"情景 A", t:"霸权永续", d:"美国在AGI和容错量子计算方面取得突破，重建单极主导地位。", points:["重建技术单极","中心-边缘全球结构","算法与标准权力"], c:"cyan"},
+                    {tag:"情景 B (基准)", t:"两极对抗", d:"大国技术差距缩小，形成两个平行的技术、经济和安全集团。", points:["两个平行全球系统","基于圈层的霸权模式","全域低强度竞争"], c:"purple"},
+                    {tag:"情景 C", t:"多极碎片化", d:"美国内部危机加深，技术扩散，全球南方崛起，导致碎片化秩序。", points:["全球权力扩散","区域霸权崛起","全球治理空心化"], c:"blue"}
+                ],
+                methodology: [
+                    {icon:"landmark", t:"历史制度主义", d:"分析五个时代的路径依赖、关键节点和制度演变。", c:"blue"},
+                    {icon:"search-plus", t:"过程追踪", d:"通过2022年至今的俄乌冲突对耦合机制进行实证验证。", c:"purple"},
+                    {icon:"network-wired", t:"复杂系统理论", d:"应用CAS框架对非线性动态、韧性和级联风险进行建模。", c:"cyan"},
+                    {icon:"map-signs", t:"情景规划", d:"结构化的情景开发，以探索合理的未来和政策杠杆点。", c:"gold"}
+                ],
+                sources: ["CBO (国会预算办公室)", "Pew (皮尤研究中心)", "BIS (国际清算银行)", "SIPRI (斯德哥尔摩国际和平研究所)", "Brookings (布鲁金斯学会)", "RAND (兰德公司)", "HKS (哈佛肯尼迪学院)", "Oxford IR (牛津国际关系)"],
+                chartLabels: ['技术', '军事', '文化', '制度', '经济']
+            }
+        };
+
+        // --- State & Logic ---
+        let currentLang = localStorage.getItem('siteLang') || 'en';
+        let radarChart;
+
+        const langBtn = document.getElementById('langBtn');
+        const langDropdown = document.getElementById('langDropdown');
+        const currentLangSpan = document.getElementById('currentLang');
+        const langOptions = document.querySelectorAll('.lang-option');
+
+        // Toggle Dropdown
+        langBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langDropdown.classList.toggle('active');
+        });
+        document.addEventListener('click', () => langDropdown.classList.remove('active'));
+
+        // Language Selection
+        langOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                const lang = opt.getAttribute('data-lang');
+                setLanguage(lang);
+                langDropdown.classList.remove('active');
+            });
+        });
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('siteLang', lang);
+            currentLangSpan.textContent = lang.toUpperCase();
+            document.documentElement.lang = lang;
+            
+            // 1. Update simple text nodes
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // 2. Update complex HTML blocks
+            renderPillars(lang);
+            renderChapters(lang);
+            renderMatrix(lang);
+            renderScenarios(lang);
+            renderMethodology(lang);
+            renderSources(lang);
+            updateChart(lang);
+        }
+
+        function renderPillars(lang) {
+            const container = document.getElementById('pillarsList');
+            const data = complexTranslations[lang].pillars;
+            const t = translations[lang];
+            container.innerHTML = data.map(p => `
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 rounded-full bg-neon-${p.c}/20 flex items-center justify-center text-neon-${p.c} text-sm font-bold mt-1">${p.n}</div>
+                    <div><h4 class="text-white font-semibold">${t[p.t]}</h4><p class="text-slate-400 text-sm">${t[p.d]}</p></div>
+                </div>
+            `).join('');
+        }
+
+        function renderChapters(lang) {
+            const container = document.getElementById('chaptersGrid');
+            const data = complexTranslations[lang].chapters;
+            container.innerHTML = data.map((ch, i) => `
+                <div class="glass p-6 rounded-2xl hover:border-neon-${ch.c}/50 transition" data-aos="fade-up" data-aos-delay="${100 + i*50}">
+                    <span class="text-xs font-bold text-neon-${ch.c} uppercase tracking-wider">Chapter ${ch.n}</span>
+                    <h3 class="text-xl font-bold text-white mt-2 mb-3">${ch.t}</h3>
+                    <ul class="text-slate-400 text-sm space-y-2">
+                        ${ch.d.split(', ').map(d => `<li><i class="fas fa-check text-neon-${ch.c} mr-2 text-xs"></i>${d}</li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        function renderMatrix(lang) {
+            const container = document.getElementById('matrixGrid');
+            const data = complexTranslations[lang].matrix;
+            container.innerHTML = data.map(cat => `
+                <div data-aos="fade-up">
+                    <h3 class="text-sm font-bold text-neon-${cat.color} uppercase tracking-wider mb-4 flex items-center"><i class="fas fa-${cat.icon} mr-2"></i> ${cat.cat}</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        ${cat.items.map(item => `
+                            <div class="matrix-cell glass p-6 rounded-xl border-l-4 border-neon-${cat.color}">
+                                <h4 class="text-lg font-bold text-white mb-2">${item.t}</h4>
+                                <p class="text-slate-400 text-sm">${item.d}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderScenarios(lang) {
+            const container = document.getElementById('scenariosGrid');
+            const data = complexTranslations[lang].scenarios;
+            container.innerHTML = data.map((sc, i) => `
+                <div class="glow-border p-8 relative overflow-hidden ${i===1?'border-neon-purple/30':''}" data-aos="fade-up" data-aos-delay="${100 + i*100}">
+                    <div class="absolute top-0 right-0 bg-neon-${sc.c} ${sc.c==='cyan'?'text-dark-900':'text-white'} text-xs font-bold px-3 py-1 rounded-bl-lg">${sc.tag}</div>
+                    <h3 class="text-xl font-bold text-white mb-3 mt-4">${sc.t}</h3>
+                    <p class="text-slate-400 text-sm mb-6">${sc.d}</p>
+                    <ul class="text-sm text-slate-300 space-y-2">
+                        ${sc.points.map(p => `<li><i class="fas fa-chevron-right text-neon-${sc.c} mr-2 text-xs"></i>${p}</li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        function renderMethodology(lang) {
+            const container = document.getElementById('methodologyList');
+            const data = complexTranslations[lang].methodology;
+            container.innerHTML = data.map(m => `
+                <div class="flex items-start space-x-4">
+                    <div class="w-10 h-10 rounded-lg bg-neon-${m.c}/10 flex items-center justify-center text-neon-${m.c} mt-1"><i class="fas fa-${m.icon}"></i></div>
+                    <div><h4 class="text-white font-semibold">${m.t}</h4><p class="text-slate-400 text-sm">${m.d}</p></div>
+                </div>
+            `).join('');
+        }
+
+        function renderSources(lang) {
+            const container = document.getElementById('dataSources');
+            const data = complexTranslations[lang].sources;
+            container.innerHTML = data.map(s => `<span class="px-2 py-1 bg-dark-700 rounded text-xs text-slate-300">${s}</span>`).join('');
+        }
+
+        function updateChart(lang) {
+            const labels = complexTranslations[lang].chartLabels;
+            if (radarChart) {
+                radarChart.data.labels = labels;
+                radarChart.update();
+            }
+        }
+
+        // Mobile Menu Logic
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => mobileMenu.classList.add('active'));
+        closeMenu.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('active')));
+
+        // Initialize Chart & Language on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: complexTranslations[currentLang].chartLabels,
+                    datasets: [{
+                        label: 'Hegemonic Power Index',
+                        data: [92, 88, 75, 80, 85],
+                        fill: true,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: '#3B82F6',
+                        pointBackgroundColor: '#3B82F6',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#3B82F6'
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255,255,255,0.05)' },
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            pointLabels: { color: '#E2E8F0', font: { size: 12, family: 'Inter', weight: '500' } },
+                            ticks: { display: false, stepSize: 20 },
+                            suggestedMin: 0, suggestedMax: 100
+                        }
+                    }
+                }
+            });
+            
+            // Apply saved language
+            setLanguage(currentLang);
+        });
+    </script>
+</body>
+</html>
